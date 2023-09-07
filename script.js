@@ -128,6 +128,7 @@ const quizQuestions = [
   
 
 
+
   
   const questionEle = document.getElementById("question");
   const ansEle = document.getElementById("option");
@@ -135,12 +136,12 @@ const quizQuestions = [
   
   let currentQuestionIndex = 0;
   let score = 0;
+  let answered = false;
   
   const startQuiz = () => {
     currentQuestionIndex = 0;
     score = 0;
-    nextEle.style.display = "block";
-    nextEle.innerHTML = "Next";
+    nextEle.style.display = "none"; // Hide "Next" initially
     showQuestion();
   };
   
@@ -148,7 +149,6 @@ const quizQuestions = [
     let currentQuestion = quizQuestions[currentQuestionIndex];
     let questionNo = currentQuestionIndex + 1;
     questionEle.innerHTML = questionNo + ". " + currentQuestion.question;
-  
     ansEle.innerHTML = ""; // Clear previous options
   
     currentQuestion.options.forEach((answer, index) => {
@@ -165,14 +165,8 @@ const quizQuestions = [
     if (selectedOption === currentQuestion.answer) {
       score++;
     }
-  
-    currentQuestionIndex++;
-  
-    if (currentQuestionIndex < quizQuestions.length) {
-      showQuestion();
-    } else {
-      showResult();
-    }
+    answered = true; // Set answered to true when a choice is made
+    nextEle.style.display = "block"; // Display "Next" after answering
   };
   
   const showResult = () => {
@@ -183,7 +177,16 @@ const quizQuestions = [
   };
   
   nextEle.addEventListener("click", () => {
-    showQuestion();
+    if (answered) {
+      currentQuestionIndex++;
+      answered = false; // Reset answered for the next question
+      if (currentQuestionIndex < quizQuestions.length) {
+        showQuestion();
+        nextEle.style.display = "none"; // Hide "Next" for the next question
+      } else {
+        showResult();
+      }
+    }
   });
   
   startQuiz();
