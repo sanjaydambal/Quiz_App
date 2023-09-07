@@ -127,6 +127,7 @@ const quizQuestions = [
 //     startQuiz();
   
 
+
   
   const questionEle = document.getElementById("question");
   const ansEle = document.getElementById("option");
@@ -138,6 +139,7 @@ const quizQuestions = [
   const startQuiz = () => {
     currentQuestionIndex = 0;
     score = 0;
+    nextEle.style.display = "block";
     nextEle.innerHTML = "Next";
     showQuestion();
   };
@@ -181,7 +183,6 @@ const quizQuestions = [
   };
   
   nextEle.addEventListener("click", () => {
-    nextEle.style.display = "none";
     showQuestion();
   });
   
