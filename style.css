@@ -59,3 +59,14 @@ padding: 20px 0;
     display: none;
     cursor: pointer;
 }
+#result {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px; /* Adjust margin to control spacing */
+    text-align: center;
+    font-weight: bold;
+    display: none; /* Initially hidden */
+  }
+  

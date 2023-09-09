@@ -125,69 +125,93 @@ const quizQuestions = [
 //         })
 //     }
 //     startQuiz();
-  
+ 
 
 
+const questionEle = document.getElementById("question");
+const ansEle = document.getElementById("options");
+const nextEle = document.getElementById("next");
+const resultEle = document.getElementById("result"); // Get the result element
 
-  
-  const questionEle = document.getElementById("question");
-  const ansEle = document.getElementById("option");
-  const nextEle = document.getElementById("next");
-  
-  let currentQuestionIndex = 0;
-  let score = 0;
-  let answered = false;
-  
-  const startQuiz = () => {
-    currentQuestionIndex = 0;
-    score = 0;
-    nextEle.style.display = "none"; // Hide "Next" initially
-    showQuestion();
-  };
-  
-  const showQuestion = () => {
-    let currentQuestion = quizQuestions[currentQuestionIndex];
-    let questionNo = currentQuestionIndex + 1;
-    questionEle.innerHTML = questionNo + ". " + currentQuestion.question;
-    ansEle.innerHTML = ""; // Clear previous options
-  
-    currentQuestion.options.forEach((answer, index) => {
-      const button = document.createElement("button");
-      button.innerHTML = answer;
-      button.classList.add("btn");
-      button.addEventListener("click", () => checkAnswer(answer));
-      ansEle.appendChild(button);
-    });
-  };
-  
-  const checkAnswer = (selectedOption) => {
-    const currentQuestion = quizQuestions[currentQuestionIndex];
-    if (selectedOption === currentQuestion.answer) {
-      score++;
-    }
-    answered = true; // Set answered to true when a choice is made
-    nextEle.style.display = "block"; // Display "Next" after answering
-  };
-  
-  const showResult = () => {
-    questionEle.innerHTML = "Quiz Completed";
-    ansEle.innerHTML = "";
-    nextEle.style.display = "none";
-    alert(`You scored ${score} out of ${quizQuestions.length} questions.`);
-  };
-  
-  nextEle.addEventListener("click", () => {
-    if (answered) {
-      currentQuestionIndex++;
-      answered = false; // Reset answered for the next question
-      if (currentQuestionIndex < quizQuestions.length) {
-        showQuestion();
-        nextEle.style.display = "none"; // Hide "Next" for the next question
-      } else {
-        showResult();
-      }
-    }
+const nameInput = document.getElementById("name");
+const usnInput = document.getElementById("usn");
+
+let currentQuestionIndex = 0;
+let score = 0;
+let answered = false;
+let studentName = "";
+let studentUSN = "";
+
+const startQuiz = () => {
+  currentQuestionIndex = 0;
+  score = 0;
+  answered = false;
+  nextEle.style.display = "none"; // Hide "Next" initially
+  studentName = nameInput.value;
+  studentUSN = usnInput.value;
+  showQuestion();
+};
+
+const showQuestion = () => {
+  let currentQuestion = quizQuestions[currentQuestionIndex];
+  let questionNo = currentQuestionIndex + 1;
+  questionEle.innerHTML = questionNo + ". " + currentQuestion.question;
+  ansEle.innerHTML = ""; // Clear previous options
+
+  currentQuestion.options.forEach((answer, index) => {
+    const button = document.createElement("button");
+    button.innerHTML = answer;
+    button.classList.add("btn");
+    button.addEventListener("click", () => checkAnswer(answer));
+    ansEle.appendChild(button);
   });
+};
+
+const checkAnswer = (selectedOption) => {
+  const currentQuestion = quizQuestions[currentQuestionIndex];
+  if (selectedOption === currentQuestion.answer) {
+    score++;
+  }
+  answered = true; // Set answered to true when a choice is made
+  nextEle.style.display = "block"; // Display "Next" after answering
+};
+
+const showResult = () => {
+  const resultMessage = `Congratulations ${studentName} bearing ${studentUSN} scored ${score}/20`;
+  resultEle.innerHTML = resultMessage;
+  resultEle.style.display = "block"; // Display the result div
+  questionEle.innerHTML = "Quiz Completed";
+  ansEle.innerHTML = "";
+  nextEle.style.display = "none";
   
-  startQuiz();
-  
+
+  // Store the result in local storage
+  localStorage.setItem("quizResult", JSON.stringify({ name: studentName, usn: studentUSN, score: score }));
+};
+
+const retrieveResult = () => {
+  // Retrieve the result from local storage
+  const storedResult = localStorage.getItem("quizResult");
+  if (storedResult) {
+    const { name, usn, score } = JSON.parse(storedResult);
+    resultEle.innerHTML = `Last result: ${name} bearing ${usn} scored ${score}/20`;
+  }
+};
+
+nextEle.addEventListener("click", () => {
+  if (answered) {
+    currentQuestionIndex++;
+    answered = false; // Reset answered for the next question
+    if (currentQuestionIndex < quizQuestions.length) {
+      showQuestion();
+      nextEle.style.display = "none"; // Hide "Next" for the next question
+    } else {
+      showResult();
+    }
+  }
+});
+
+// Call retrieveResult to display the last result when the page loads
+retrieveResult();
+
+startQuiz();

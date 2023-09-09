@@ -4,21 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz</title>
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="result"></div>
     <div class="container">
         <h1>Biology Quiz</h1>
+        <div class="student-info">
+            <label for="name">Name:</label>
+            <input type="text" id="name" placeholder="Enter your name">
+            <label for="usn">USN:</label>
+            <input type="text" id="usn" placeholder="Enter your USN">
+        </div>
+        <div id="result" style="display: none;"></div>
         <div class="question">
             <h2 id="question">Question</h2>
         </div>
-    <div id="option">
-        <button class="btn">Answer 1</button>
-        <button class="btn">Answer 2</button>
-        <button class="btn">Answer 3</button> 
-        <button class="btn">Answer 4</button>
-    </div>
-    <button id="next"> Next</button>
+        <div id="options">
+            <button class="btn">Answer 1</button>
+            <button class="btn">Answer 2</button>
+            <button class="btn">Answer 3</button>
+            <button class="btn">Answer 4</button>
+        </div>
+        <button id="next">Next</button>
+       
     </div>
     <script src="script.js"></script>
 </body>
