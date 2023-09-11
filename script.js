@@ -216,14 +216,14 @@ const quizQuestions = [
 
 // startQuiz();
 
-
 const questionEle = document.getElementById("question");
 const ansEle = document.getElementById("options");
 const nextEle = document.getElementById("next");
-const resultEle = document.getElementById("result"); // Get the result element
+const resultEle = document.getElementById("result");
 
 const nameInput = document.getElementById("name");
 const usnInput = document.getElementById("usn");
+const submitButton = document.getElementById("submit"); // Get the Submit button
 
 let currentQuestionIndex = 0;
 let score = 0;
@@ -232,14 +232,31 @@ let studentName = "";
 let studentUSN = "";
 
 const startQuiz = () => {
-  studentName = nameInput.value; // Set studentName from input
-  studentUSN = usnInput.value;   // Set studentUSN from input
   currentQuestionIndex = 0;
   score = 0;
   answered = false;
   nextEle.style.display = "none"; // Hide "Next" initially
   showQuestion();
 };
+
+const hideStudentInfo = () => {
+  // Hide the student info input fields and the "Submit" button
+  const studentInfo = document.querySelector(".student-info");
+  studentInfo.style.display = "none";
+  submitButton.style.display = "none";
+};
+submitButton.addEventListener("click", () => {
+  // Get the name and USN values when the "Submit" button is clicked
+  studentName = nameInput.value;
+  studentUSN = usnInput.value;
+  // Hide the student info input fields and the "Submit" button
+  hideStudentInfo();
+  // Start the quiz after submission
+  startQuiz();
+  questionEle.style.display = "block";
+  ansEle.style.display = "block";
+  nextEle.style.display = "block";
+});
 
 const showQuestion = () => {
   let currentQuestion = quizQuestions[currentQuestionIndex];
